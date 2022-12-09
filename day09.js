@@ -82,30 +82,18 @@ function goThruSteps(directions, startPoint) {
   let currTailPoint = [r, c];
 
   for (let [dir, amt] of directions) {
-    if (dir === "U") {
-      for (let i = 0; i < amt; i++) {
-        currHeadPoint = moveUp(currHeadPoint);
-        currTailPoint = maybeMoveNextNode(currHeadPoint, currTailPoint);
-        tailVisits.add(pointToStr(currTailPoint));
-      }
-    } else if (dir === "D") {
-      for (let i = 0; i < amt; i++) {
-        currHeadPoint = moveDown(currHeadPoint);
-        currTailPoint = maybeMoveNextNode(currHeadPoint, currTailPoint);
-        tailVisits.add(pointToStr(currTailPoint));
-      }
-    } else if (dir === "L") {
-      for (let i = 0; i < amt; i++) {
-        currHeadPoint = moveLeft(currHeadPoint);
-        currTailPoint = maybeMoveNextNode(currHeadPoint, currTailPoint);
-        tailVisits.add(pointToStr(currTailPoint));
-      }
-    } else {
-      for (let i = 0; i < amt; i++) {
-        currHeadPoint = moveRight(currHeadPoint);
-        currTailPoint = maybeMoveNextNode(currHeadPoint, currTailPoint);
-        tailVisits.add(pointToStr(currTailPoint));
-      }
+    for (let i = 0; i < amt; i++) {
+      currHeadPoint =
+        dir === "U"
+          ? moveUp(currHeadPoint)
+          : dir === "D"
+          ? moveDown(currHeadPoint)
+          : dir === "L"
+          ? moveLeft(currHeadPoint)
+          : moveRight(currHeadPoint);
+
+      currTailPoint = maybeMoveNextNode(currHeadPoint, currTailPoint);
+      tailVisits.add(pointToStr(currTailPoint));
     }
   }
 
@@ -131,34 +119,19 @@ function simulate(directions, startPoint) {
   const tailVisits = new Set([pointToStr(startPoint)]);
 
   for (let [dir, amt] of directions) {
-    if (dir === "U") {
-      for (let i = 0; i < amt; i++) {
-        nodeList[0] = moveUp(nodeList[0]);
-        nodeList = moveRemaining(nodeList, (tailPointStr) =>
-          tailVisits.add(tailPointStr)
-        );
-      }
-    } else if (dir === "D") {
-      for (let i = 0; i < amt; i++) {
-        nodeList[0] = moveDown(nodeList[0]);
-        nodeList = moveRemaining(nodeList, (tailPointStr) =>
-          tailVisits.add(tailPointStr)
-        );
-      }
-    } else if (dir === "L") {
-      for (let i = 0; i < amt; i++) {
-        nodeList[0] = moveLeft(nodeList[0]);
-        nodeList = moveRemaining(nodeList, (tailPointStr) =>
-          tailVisits.add(tailPointStr)
-        );
-      }
-    } else {
-      for (let i = 0; i < amt; i++) {
-        nodeList[0] = moveRight(nodeList[0]);
-        nodeList = moveRemaining(nodeList, (tailPointStr) =>
-          tailVisits.add(tailPointStr)
-        );
-      }
+    for (let i = 0; i < amt; i++) {
+      nodeList[0] =
+        dir === "U"
+          ? moveUp(nodeList[0])
+          : dir === "D"
+          ? moveDown(nodeList[0])
+          : dir === "L"
+          ? moveLeft(nodeList[0])
+          : moveRight(nodeList[0]);
+
+      nodeList = moveRemaining(nodeList, (tailPointStr) =>
+        tailVisits.add(tailPointStr)
+      );
     }
   }
 
